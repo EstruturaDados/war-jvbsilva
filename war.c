@@ -25,8 +25,8 @@
 // --- Constantes Globais ---
 // Definem valores fixos para o número de territórios, missões e tamanho máximo de strings, facilitando a manutenção.
 enum{
-    MAX_TERRITORIOS = 2,
-    TAM_STRING = 5
+    MAX_TERRITORIOS = 5,
+    TAM_STRING = 50
 };
 
 const char invalid_value_error_msg[] = "Valor inválido.\n";

@@ -20,13 +20,12 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <ctype.h>
 
 // --- Constantes Globais ---
 // Definem valores fixos para o número de territórios, missões e tamanho máximo de strings, facilitando a manutenção.
 enum{
     MAX_TERRITORIOS = 5,
-    TAM_STRING = 50
+    TAM_STRING = 5
 };
 
 const char invalid_value_error_msg[] = "Valor inválido.\n";
@@ -39,52 +38,32 @@ struct Territorio{
     int num_tropas;
 };
 
-// Função para mostrar mensagem de erro ao entrar valor inválido
-void show_error_msg(){
-    printf("%s",invalid_value_error_msg);
-}
-
 // Função para limpar o buffer de entrada do teclado (stdin), evitando problemas com leituras consecutivas de scanf e getchar.
 void limparBufferEntrada(){
     int c;
     while ((c = getchar()) != '\n' && c != EOF);
 }
 
-// Função para remover espaços no início e final da string
-void trimString(char str[]) {
-  int start = 0, end = strlen(str) - 1;
-
-  // Remove leading whitespace
-  while (isspace(str[start])) {
-    start++;
-  }
-  // Remove trailing whitespace
-  while (end > start && isspace(str[end])) {
-    end--;
-  }
-  // If the string was trimmed, adjust the null terminator
-  if (start > 0 || end < (strlen(str) - 1)) {
-    memmove(str, str + start, end - start + 1);
-    str[end - start + 1] = '\0';
-  }
-}
-
 // Função para garantir: 
 // - string não vazia;
-// - string sem espaços no início e fim;
 // - limpeza do buffer quando input menor que TAM_STRING;
 void get_str_input(const char input_msg[], char target[]){
     while(1){
         printf("%s",input_msg);
-        fgets(target, TAM_STRING, stdin); // Read input as a string
-        if (strchr(target, '\n') == NULL) {  // no newline → leftovers
+        fgets(target, TAM_STRING, stdin);
+        // Checa se a função fgets truncou o input para em seguida limpar o buffe de entrada
+        if (strchr(target, '\n') == NULL) {  
             limparBufferEntrada();
+        // Se não truncou então existe um '\n' no final da string que iremos remover
+        }else{
+            target[strlen(target) - 1] = 0;
         }
-        trimString(target); // Remove espaços no inicio e final
+        // Se a entrada do usuário tem pelo menos um caractere pare
         if(strlen(target) != 0){
             break;
+        // Se a entrada for vazia informe e continue o loop até atender os critérios
         }else{
-            show_error_msg();
+            printf("%s",invalid_value_error_msg);
         }
     }
     return;
@@ -102,12 +81,12 @@ void get_int_input(const char input_msg[], int* target) {
         // Convertendo de string para inteiro
         number = strtol(buffer, &endptr, 10);
         // Validando conversão
-        if (*endptr == '\0' && number > 0) {
+        if ((*endptr == '\n' ||*endptr == '\0') && number > 0) {
             *target = number;
             valid = 1;
             break;
         } else {
-            show_error_msg();
+            printf("%s",invalid_value_error_msg);
         }
     }
     return;
@@ -121,6 +100,7 @@ void read_territorio(struct Territorio territorios[], int num_territorio){
         get_int_input( "Número de Tropas: ", &territorios[num_territorio].num_tropas);
         printf("\n");        
 }
+
 void inicia_territorios(struct Territorio territorios[]){
     printf("==================================\n");
     printf("Vamos cadastrar os %d territorios iniciais do nosso mundo.\n",MAX_TERRITORIOS);

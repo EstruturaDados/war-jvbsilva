@@ -11,7 +11,7 @@
 // - Cadastrar os dados de cada território: **Nome**, **Cor do Exército**, e **Número de Tropas**.
 // - Exibir o estado atual do mapa.
 // ### ⚙️ Funcionalidades
-// - Leitura de dados pelo terminal (`fgets` e `scanf`)
+// - Leitura de dados pelo terminal
 // - Impressão organizada dos dados de todos os territórios
 //
 // ============================================================================
@@ -25,12 +25,11 @@
 // --- Constantes Globais ---
 // Definem valores fixos para o número de territórios, missões e tamanho máximo de strings, facilitando a manutenção.
 enum{
-    MAX_TERRITORIOS = 5,
-    TAM_STRING = 25,
-    MAX_NUM_TROPA_DIGITS = 4 //máixmo de dígitos que o usuário pode utilizar para inicializar as tropas
+    MAX_TERRITORIOS = 2,
+    TAM_STRING = 5
 };
 
-const char *invalid_value_error_msg = "Valor inválido.\n";
+const char invalid_value_error_msg[] = "Valor inválido.\n";
 
 // --- Estrutura de Dados ---
 // Define a estrutura para um território, contendo seu nome, a cor do exército que o domina e o número de tropas.
@@ -52,7 +51,7 @@ void limparBufferEntrada(){
 }
 
 // Função para remover espaços no início e final da string
-void trimString(char *str) {
+void trimString(char str[]) {
   int start = 0, end = strlen(str) - 1;
 
   // Remove leading whitespace
@@ -74,7 +73,7 @@ void trimString(char *str) {
 // - string não vazia;
 // - string sem espaços no início e fim;
 // - limpeza do buffer quando input menor que TAM_STRING;
-void get_str_input(const char *input_msg, char *target){
+void get_str_input(const char input_msg[], char target[]){
     while(1){
         printf("%s",input_msg);
         fgets(target, TAM_STRING, stdin); // Read input as a string
@@ -92,19 +91,20 @@ void get_str_input(const char *input_msg, char *target){
 }
 
 // Função para ler inteiros
-void get_int_input(const char *input_msg, int *target, int buffer_size) {
-    char buffer[buffer_size];
+void get_int_input(const char input_msg[], int* target) {
+    char buffer[TAM_STRING];
     char *endptr;
-    int number;
+    long number;
+    int valid = 0;
 
-    *target = 0;    
-    while(*target == 0){
+    while(!valid){
         get_str_input(input_msg,buffer);
         // Convertendo de string para inteiro
-        number = (int) strtol(buffer, &endptr, 10);
+        number = strtol(buffer, &endptr, 10);
         // Validando conversão
-        if (endptr != buffer &&  *endptr == '\0' && number > 0) {
+        if (*endptr == '\0' && number > 0) {
             *target = number;
+            valid = 1;
             break;
         } else {
             show_error_msg();
@@ -118,7 +118,7 @@ void read_territorio(struct Territorio territorios[], int num_territorio){
         printf("--- Cadastrando Territorio %d ---\n",num_territorio+1);
         get_str_input("Nome do territorio: ", territorios[num_territorio].nome);
         get_str_input("Cor do territorio: ", territorios[num_territorio].cor);
-        get_int_input("Número de Tropas: ",&territorios[num_territorio].num_tropas,5);
+        get_int_input( "Número de Tropas: ", &territorios[num_territorio].num_tropas);
         printf("\n");        
 }
 void inicia_territorios(struct Territorio territorios[]){

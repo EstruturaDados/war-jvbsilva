@@ -1,0 +1,56 @@
+
+Com base nos territórios já cadastrados, o sistema deverá permitir que um jogador selecione um território como atacante, e outro como defensor.
+O ataque será resolvido por meio de uma simulação com dados aleatórios (como rolagem de dados), e o resultado alterará o controle e as tropas do território atacado. 
+
+Requisitos funcionais
+
+Veja as funcionalidades essenciais para a implementação de uma simulação de batalha entre territórios.
+
+    Alocação dinâmica de territórios: utilizar calloc ou malloc para alocar memória para um vetor de struct Territorio com tamanho informado pelo usuário.
+     
+    Simulação de ataques: criar uma função void atacar(Territorio* atacante, Territorio* defensor) que simula um ataque, utilizando números aleatórios como se fossem dados de batalha.
+     
+    Atualização de dados: o território defensor deve mudar de dono (cor do exército) se o atacante vencer, e suas tropas devem ser atualizadas.
+     
+    Exibição pós-ataque: o sistema deve exibir os dados atualizados dos territórios após cada ataque.
+
+Requisitos não funcionais
+
+A implementação deve seguir boas práticas de organização, uso eficiente da memória e interação clara com o usuário. Acompanhe!
+
+    Modularização: o código deve estar organizado com funções distintas para cadastro, exibição, ataque e liberação de memória.
+     
+    Uso de ponteiros: todos os acessos e modificações aos dados dos territórios devem ser feitos por ponteiros.
+     
+    Gerenciamento de memória: toda memória alocada dinamicamente deve ser liberada ao final do programa utilizando free.
+     
+    Interface amigável: o terminal deve orientar o jogador sobre quais territórios podem ser usados para atacar e defender, com mensagens claras.
+
+Instruções detalhadas
+
+Para que o programa funcione da maneira esperada, alguns elementos e etapas de implementação devem ser seguidos conforme descrito a seguir.
+
+    Bibliotecas necessárias: inclua stdio.h, stdlib.h, string.h e time.h.
+     
+    Struct atualizada: utilize a struct Territorio com os campos char nome[30], char cor[10], int tropas.
+     
+    Alocação de memória: peça ao usuário o número total de territórios e use calloc ou malloc para alocar esse vetor de forma dinâmica.
+     
+    Função de ataque: implemente void atacar(Territorio* atacante, Territorio* defensor) que utilize rand() para simular um dado de ataque (1 a 6) para cada lado.
+     
+    Atualização dos campos: transfira a cor e metade das tropas para o território defensor se o atacante vencer. Se perder, o atacante perde uma tropa.
+     
+    Liberação de memória: crie uma função void liberarMemoria(Territorio* mapa) para liberar o espaço alocado.
+
+Requisitos técnicos adicionais
+
+Alguns cuidados extras proporcionam o bom funcionamento e a legibilidade do programa. São eles:
+
+
+    Utilizar srand(time(NULL)) para garantir aleatoriedade nos dados de ataque.
+     
+    Validar as escolhas de ataque para que o jogador não ataque um território da própria cor.
+     
+    Usar free corretamente ao final do programa.
+     
+    Comentar o código explicando cada função e trecho importante.

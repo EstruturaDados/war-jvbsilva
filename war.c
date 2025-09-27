@@ -4,21 +4,7 @@
 //
 // ============================================================================
 //
-// ## 🧩 Nível Novato: Cadastro Inicial dos Territórios
-// ### 🎯 Objetivo
-// - Criar uma `struct` chamada `Territorio`.
-// - Usar um **vetor estático de 5 elementos** para armazenar os territórios.
-// - Cadastrar os dados de cada território: **Nome**, **Cor do Exército**, e **Número de Tropas**.
-// - Exibir o estado atual do mapa.
-// ### ⚙️ Funcionalidades
-// - Leitura de dados pelo terminal
-// - Impressão organizada dos dados de todos os territórios
-//
-// ============================================================================
-
-// Inclusão das bibliotecas padrão necessárias para entrada/saída, alocação de memória, manipulação de strings e tempo.
 #include <stdio.h>
-
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
@@ -130,6 +116,14 @@ void inicia_territorios(struct Territorio* territorios, int* num_territorios) {
     for (int i = 0; i < *num_territorios; i++) {
         read_territorio(territorios, i);
     }
+}
+
+void atribuirMissao(char* destino, char* missoes[], int totalMissoes){
+
+}
+
+int verificarMissao(char* missao, struct Territorio* mapa, int tamanho){
+
 }
 
 void exibe_estado_atual(struct Territorio* territorios, int* num_territorios, int* p_turno) {
@@ -254,13 +248,25 @@ void game_loop(struct Territorio* territorios, int* num_territorios) {
     }
 }
 
+char gerarMissoes(int num_missoes, int size_missao){
+
+
+}
 // --- Função Principal (main) ---
 // Função principal que orquestra o fluxo do jogo, chamando as outras funções em ordem.
 int main() {
 
     // - Aloca a memória para o mapa do mundo e verifica se a alocação foi bem-sucedida.
     int num_territorios = read_num_territorios();
+    
     struct Territorio* territorios = malloc(num_territorios * sizeof(struct Territorio));
+    if(!territorios){
+        perror("Erro ao alocar territórios");
+        return 1;
+    }
+
+    // - Aloca a memória para o vetor de missoes
+
 
     // - Preenche os territórios com seus dados iniciais (tropas, donos, etc.).
     inicia_territorios(territorios, &num_territorios);

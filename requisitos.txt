@@ -1,56 +1,59 @@
+Você receberá a missão de implementar a funcionalidade de missões estratégicas individuais para cada jogador,
+que deverá receber, no início do jogo, uma missão sorteada de forma automática entre diversas descrições pré-
+definidas, armazenadas em um vetor de strings.
 
-Com base nos territórios já cadastrados, o sistema deverá permitir que um jogador selecione um território como atacante, e outro como defensor.
-O ataque será resolvido por meio de uma simulação com dados aleatórios (como rolagem de dados), e o resultado alterará o controle e as tropas do território atacado. 
+Essa missão será consultada durante o jogo para verificar se a condição de vitória foi atingida.
 
 Requisitos funcionais
 
-Veja as funcionalidades essenciais para a implementação de uma simulação de batalha entre territórios.
-
-    Alocação dinâmica de territórios: utilizar calloc ou malloc para alocar memória para um vetor de struct Territorio com tamanho informado pelo usuário.
+A seguir, são apresentadas as etapas para implementar o sistema de missões dos jogadores, desde a criação até a verificação de objetivos.
+ 
+    Criação do vetor de missões: declarar um vetor de strings contendo ao menos cinco descrições diferentes de missões estratégicas (ex: Conquistar 3 territórios seguidos, Eliminar todas as tropas da cor vermelha etc.).
      
-    Simulação de ataques: criar uma função void atacar(Territorio* atacante, Territorio* defensor) que simula um ataque, utilizando números aleatórios como se fossem dados de batalha.
+    Sorteio da missão: implementar a função void atribuirMissao(char* destino, char* missoes[], int totalMissoes) que sorteia uma missão e copia para a variável de missão do jogador usando strcpy.
      
-    Atualização de dados: o território defensor deve mudar de dono (cor do exército) se o atacante vencer, e suas tropas devem ser atualizadas.
+    Armazenamento e acesso: a missão de cada jogador deve ser armazenada dinamicamente utilizando malloc.
      
-    Exibição pós-ataque: o sistema deve exibir os dados atualizados dos territórios após cada ataque.
+    Verificação da missão: implementar a função int verificarMissao(char* missao, Territorio* mapa, int tamanho), que avalia se a missão do jogador foi cumprida (crie uma lógica simples inicial para verificação).
+     
+    Exibição condicional: o sistema deve verificar, ao final de cada turno, se algum jogador cumpriu sua missão e declarar o vencedor.
 
 Requisitos não funcionais
 
-A implementação deve seguir boas práticas de organização, uso eficiente da memória e interação clara com o usuário. Acompanhe!
+Para garantir organização e clareza na execução das missões, algumas práticas e estruturas devem ser seguidas durante a implementação. Vamos lá!
 
-    Modularização: o código deve estar organizado com funções distintas para cadastro, exibição, ataque e liberação de memória.
+    Modularização: o código deve estar dividido em funções específicas, como atribuirMissao, verificarMissao, exibirMissao, atacar, exibirMapa, liberarMemoria, e a main.
      
-    Uso de ponteiros: todos os acessos e modificações aos dados dos territórios devem ser feitos por ponteiros.
+    Uso de ponteiros: as missões dos jogadores devem ser manipuladas por meio de ponteiros.
      
-    Gerenciamento de memória: toda memória alocada dinamicamente deve ser liberada ao final do programa utilizando free.
+    Passagem por valor e referência: a missão deve ser passada por valor para exibição e por referência para atribuição e verificação.
      
-    Interface amigável: o terminal deve orientar o jogador sobre quais territórios podem ser usados para atacar e defender, com mensagens claras.
+    Interface intuitiva: o sistema deve exibir a missão ao jogador apenas uma vez (no início) e verificar silenciosamente se ela foi cumprida ao longo da execução.
 
 Instruções detalhadas
 
-Para que o programa funcione da maneira esperada, alguns elementos e etapas de implementação devem ser seguidos conforme descrito a seguir.
+Os elementos a seguir ajudam a estruturar corretamente o funcionamento do jogo e o gerenciamento da memória. Veja!
 
     Bibliotecas necessárias: inclua stdio.h, stdlib.h, string.h e time.h.
      
-    Struct atualizada: utilize a struct Territorio com os campos char nome[30], char cor[10], int tropas.
+    Estrutura dos territórios: utilize a struct Territorio com os campos char nome[30], char cor[10], int tropas.
      
-    Alocação de memória: peça ao usuário o número total de territórios e use calloc ou malloc para alocar esse vetor de forma dinâmica.
+    Alocação de memória: use calloc ou malloc para alocar os vetores de territórios e armazenar a missão de cada jogador.
      
-    Função de ataque: implemente void atacar(Territorio* atacante, Territorio* defensor) que utilize rand() para simular um dado de ataque (1 a 6) para cada lado.
+    Função de ataque: implemente void atacar(Territorio* atacante, Territorio* defensor) usando rand() para simular uma rolagem de dados (valores entre 1 e 6).
      
-    Atualização dos campos: transfira a cor e metade das tropas para o território defensor se o atacante vencer. Se perder, o atacante perde uma tropa.
+    Atualização de campos: transfira a cor e metade das tropas para o território defensor se o atacante vencer. Caso contrário, o atacante perde uma tropa.
      
-    Liberação de memória: crie uma função void liberarMemoria(Territorio* mapa) para liberar o espaço alocado.
+    Função de liberação: implemente void liberarMemoria(...) para liberar toda a memória alocada dinamicamente (territórios e missões).
 
 Requisitos técnicos adicionais
 
-Alguns cuidados extras proporcionam o bom funcionamento e a legibilidade do programa. São eles:
+Para finalizar a implementação com boas práticas, siga os cuidados técnicos adiante:
 
-
-    Utilizar srand(time(NULL)) para garantir aleatoriedade nos dados de ataque.
+    Use srand(time(NULL)) para gerar números aleatórios.
      
-    Validar as escolhas de ataque para que o jogador não ataque um território da própria cor.
+    Valide os ataques para que o jogador só possa atacar territórios inimigos.
      
-    Usar free corretamente ao final do programa.
+    Utilize free() ao final para evitar vazamentos de memória.
      
-    Comentar o código explicando cada função e trecho importante.
+    Comente o código explicando o papel de cada função e lógica importante.

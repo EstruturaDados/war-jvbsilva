@@ -34,8 +34,8 @@ const char invalid_value_error_msg[] = "Valor inválido.\n";
 // --- Estrutura de Dados ---
 // Define a estrutura para um território, contendo seu nome, a cor do exército que o domina e o número de tropas.
 struct Territorio{
-    char nome[30];
-    char cor[10];
+    char nome[TAM_NOME];
+    char cor[TAM_COR];
     int tropas;
 };
 

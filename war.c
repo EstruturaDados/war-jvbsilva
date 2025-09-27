@@ -25,7 +25,8 @@
 // Definem valores fixos para o número de territórios, missões e tamanho máximo de strings, facilitando a manutenção.
 enum{
     MAX_TERRITORIOS = 5,
-    TAM_STRING = 5
+    TAM_NOME = 30,
+    TAM_COR = 10
 };
 
 const char invalid_value_error_msg[] = "Valor inválido.\n";
@@ -33,9 +34,9 @@ const char invalid_value_error_msg[] = "Valor inválido.\n";
 // --- Estrutura de Dados ---
 // Define a estrutura para um território, contendo seu nome, a cor do exército que o domina e o número de tropas.
 struct Territorio{
-    char nome[TAM_STRING];
-    char cor[TAM_STRING];
-    int num_tropas;
+    char nome[30];
+    char cor[10];
+    int tropas;
 };
 
 // Função para limpar o buffer de entrada do teclado (stdin), evitando problemas com leituras consecutivas de scanf e getchar.
@@ -46,12 +47,12 @@ void limparBufferEntrada(){
 
 // Função para garantir: 
 // - string não vazia;
-// - limpeza do buffer quando input menor que TAM_STRING;
-void get_str_input(const char input_msg[], char target[]){
+// - limpeza do buffer quando input menor que o tamanho máximo;
+void get_str_input(const char input_msg[], char target[], int max_size){
     while(1){
         printf("%s",input_msg);
-        fgets(target, TAM_STRING, stdin);
-        // Checa se a função fgets truncou o input para em seguida limpar o buffe de entrada
+        fgets(target, max_size, stdin);
+        // Checa se a função fgets truncou o input para em seguida limpar o buffer de entrada
         if (strchr(target, '\n') == NULL) {  
             limparBufferEntrada();
         // Se não truncou então existe um '\n' no final da string que iremos remover
@@ -69,36 +70,30 @@ void get_str_input(const char input_msg[], char target[]){
     return;
 }
 
-// Função para ler inteiros
+// Função para ler inteiros usando scanf
 void get_int_input(const char input_msg[], int* target) {
-    char buffer[TAM_STRING];
-    char *endptr;
-    long number;
     int valid = 0;
-
     while(!valid){
-        get_str_input(input_msg,buffer);
-        // Convertendo de string para inteiro
-        number = strtol(buffer, &endptr, 10);
-        // Validando conversão
-        if ((*endptr == '\n' ||*endptr == '\0') && number > 0) {
-            *target = number;
+        printf("%s", input_msg);
+        if(scanf("%d", target) == 1 && *target > 0){
             valid = 1;
-            break;
+            limparBufferEntrada();
         } else {
             printf("%s",invalid_value_error_msg);
+            limparBufferEntrada();
         }
     }
     return;
 }
 
-// Função para ler as informações de um Territorio
+// Função para ler as informações de um Territorio usando scanf para nome e tropas conforme requisitos
 void read_territorio(struct Territorio territorios[], int num_territorio){
         printf("--- Cadastrando Territorio %d ---\n",num_territorio+1);
-        get_str_input("Nome do territorio: ", territorios[num_territorio].nome);
-        get_str_input("Cor do territorio: ", territorios[num_territorio].cor);
-        get_int_input( "Número de Tropas: ", &territorios[num_territorio].num_tropas);
-        printf("\n");        
+        
+        get_str_input("Nome do territorio: ", territorios[num_territorio].nome, TAM_NOME);
+        get_str_input("Cor do territorio: ", territorios[num_territorio].cor, TAM_COR);
+        get_int_input( "Número de Tropas: ", &territorios[num_territorio].tropas);
+        printf("\n");
 }
 
 void inicia_territorios(struct Territorio territorios[]){
@@ -115,7 +110,7 @@ void exibe_estado_atual(struct Territorio territorios[]){
     printf("==================================\n");
     printf("\n");
     for(int i = 0; i < MAX_TERRITORIOS;i++){
-        printf("%d. %s (Exercito %s, Tropas: %d)\n",i+1,territorios[i].nome, territorios[i].cor, territorios[i].num_tropas);
+        printf("%d. %s (Exercito %s, Tropas: %d)\n",i+1,territorios[i].nome, territorios[i].cor, territorios[i].tropas);
     }
 }
 
